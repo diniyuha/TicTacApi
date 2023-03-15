@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TicTacApi.Exceptions;
+using TicTacApi.Models;
 using TicTacApi.Services;
 
 namespace TicTacApi.Controllers
@@ -25,11 +26,11 @@ namespace TicTacApi.Controllers
         }
 
         [HttpPost("move")]
-        public async Task<IActionResult> MakeMove(Guid gameId, int cellIndex)
+        public async Task<IActionResult> MakeMove([FromBody] GameMoveRequest request)
         {
             try
             {
-                var game = await _gameServiceTicTac.MakeMove(gameId, cellIndex);
+                var game = await _gameServiceTicTac.MakeMove(request.GameId, request.CellIndex);
                 return Ok(game);
             }
             catch (GameException e)
